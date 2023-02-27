@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Distributions</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+  </head>
+  <body style="max-width: 95%; margin: auto;">
+    <h2>Probability that randomization bias leads to a negative trial result of an effective treatment (binary outcomes)</h2>
+    <div style="background-color: #f2f2f2; padding: 20px; border-radius: 5px;">
+      <form method="post">
+        <label for="num_patients">Number of Patients in Trial (up to 50,000):</label><br>
+        <input type="text" id="num_patients" name="num_patients" style="border-radius: 5px; border: 1px solid #ccc; padding: 5px;" value="{{num_patients or 1000}}" pattern="[1-9][0-9]{0,3}|50000">
+        <br><br>
+        <label for="ctrl_rate">Control Rate of Suboptimal Outcome (e.g. 15% of patients have suboptimal outcome or non-response in control arm):</label><br>
+        <input type="range" min="0" max="1" step=".01" id="ctrl_rate" name="ctrl_rate" style="border-radius: 5px; border: 1px solid #ccc; padding: 5px; float: left;" oninput="showCtrlRate(this.value);" value="{{ctrl_rate or 0.20}}">
+
+        <p id="ctrl_rate_val" style="float: left; padding-left: 10px;">{{ctrl_rate * 100 if ctrl_rate else 20}}</p><p>%: of patients</p>
+        <script>
+            function showCtrlRate(newVal) {
+                document.getElementById("ctrl_rate_val").innerHTML = Math.round(newVal * 100);
+            }
+        </script>
+        <br>
+        <label for="treat_effect">Est. Treatment Effect (e.g. -20% fewer suboptimal outcomes or non responders with treatment vs control):</label><br>
+        <input type="range" min="-1" max="0" step=".01" id="treat_effect" name="treat_effect" style="border-radius: 5px; border: 1px solid #ccc; padding: 5px; float: left;" oninput="showTreatEffect(this.value);" value="{{treat_effect or -0.20}}">
+        <p id="treat_effect_val" style="float: left; padding-left: 10px;">{{treat_effect * 100 if treat_effect else -20}}</p><p>%: fewer suboptimal outcomes</p>
+
+
+        <script>
+            function showTreatEffect(newVal) {
+                document.getElementById("treat_effect_val").innerHTML = Math.round(newVal * 100);
+            }
+        </script>
+        <br><br>
+<div style="width: 100%; text-align: center;">
+    <input type="submit" value="Submit" style="background-color: #003366; color: white; font-size: 20px;">
+</div>
+      </form> 
+    </div>
+    <br><br>
+    {{ chart|safe }}
+    <br><br>
+    {{ chart_2|safe }}
+    <br><br>
+    {{ chart_ml|safe }}
+    <br><br>
+    {{ chart_2_ml|safe }}
+  </body>
+</html>
+
